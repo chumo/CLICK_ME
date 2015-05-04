@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The defiant site</title>
+	<script src="http://d3js.org/d3.v3.js"></script>
+	<style>
+		text {
+			font-family: Sans-serif;
+			font-size: 22px;
+			fill: #ffffff;
+		}
+		circle {
+			stroke-width: 2;
+			stroke: #000000;
+			fill: #FF0000;
+		}
+
+	</style>
+</head>
+<body style='text-align:center'>
+	<p align="left">chumo &copy 2015</p>
+	<h1 style='font-size:300%;font-family:Helvetica;'>The defiant site</h1>
+	<script type="text/javascript">
+
+		var w = 640
+		var h = 480
+
+		var cx = w/2
+		var cy = h/2
+
+		var svgcontainer = d3.select("body").append("svg").attr("width", w).attr("height", h);
+		var fly = svgcontainer.append("g");
+
+		var randx = d3.scale.linear().domain([0,1]).range([51,w-51]);
+        var randy = d3.scale.linear().domain([0,1]).range([51,h-51]);
+
+		circ = fly.append("circle").attr("cx",0).attr("cy",0).attr("r",50);
+		fly.append("text").attr("x",0).attr("y",0).attr("text-anchor","middle").text("You can't");
+		fly.append("text").attr("x",0).attr("y",0+20).attr("text-anchor","middle").text("click me");
+		fly.attr("transform","translate("+cx+","+cy+")");
+	    
+	    svgcontainer.on("mousemove", function() {
+        	var mx= d3.mouse(this)[0];
+        	var my= d3.mouse(this)[1];
+
+        	var distance = Math.sqrt(Math.pow((mx-cx),2)+Math.pow((my-cy),2));
+        	var color = d3.scale.linear().domain([w/2,0]).range(['red','yellow']);
+        	circ.style("fill",color(distance));
+
+        	if (distance < 70) {
+        		
+        		cx = randx(Math.random());
+        		cy = randy(Math.random());
+
+        		circ.attr("r",50)
+        		.transition().duration(50).attr("transform","scale(2)")
+        		.transition().duration(50).attr("transform","scale(1)");
+        		fly.transition().duration(50).ease('linear').attr("transform","translate("+cx+","+cy+")");
+
+
+        	};
+    	});
+
+</script>
+</body>
+</html>
